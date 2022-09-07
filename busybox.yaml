@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          env:
+          - name: TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: client-token
+                key: uuid
+                optional: true
+          command:
+          - sleep
+          - "3600"
